@@ -1,0 +1,34 @@
+{% extends "../index.html" %}
+
+{% block title %} Dealers {% endblock %}
+
+{% block content %}
+<div class="about-section paddingTB60 gray-bg">
+    <h1>List of car dealers:</h1>
+    <table id="data-table" data-toggle="table">
+      <thead>
+        <tr>
+          <th>Address</th>
+          <th>City</th>
+          <th>State</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for dealer in dealerships %}
+        <tr data-id="{{ dealer.id }}">
+            <td>{{ dealer.address }}</td>
+            <td>{{ dealer.city }}</td>
+            <td>{{ dealer.state }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+</div>
+
+<script>
+    $('#data-table').on('click-row.bs.table', function (row, $element, field) {
+        window.location.href = `./dealer/${$element._data.id}`;
+    })
+</script>
+
+{% endblock %}

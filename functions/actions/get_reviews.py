@@ -30,15 +30,14 @@ def main(dict):
         dealers = []
 
         data = db
-        dealerId = dealerId.strip('"')
+        dealerId = dealerId.strip('"') if type(dealerId) == str else dealerId
 
         if dealerId:
             data = filter(lambda r: r['dealership'] == int(dealerId), data)
 
         for document in data:
-
             dealers.append({
-                "id": document["id"],
+                "id": document.get("id", str()),
                 "name": document.get("name", str()),
                 "dealership": document.get("dealership", str()),
                 "review": document.get("review", str()),

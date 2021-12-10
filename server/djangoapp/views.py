@@ -1,20 +1,27 @@
+import asyncio
+import functools
+from concurrent.futures import ThreadPoolExecutor
+
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-# from .restapis import related methods
+from .restapis import get_dealers_from_cf, analyze_review_sentiments, get_dealer_reviews_from_cf, \
+    get_dealers_by_id_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
 import logging
-import json
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
+URLS = {
+    "DEALERSHIPS": "https://ee46738b.eu-gb.apigw.appdomain.cloud/api/dealership",
+    "REVIEW": "https://ee46738b.eu-gb.apigw.appdomain.cloud/api/review"
+}
 
-# Create your views here.
 
 def about(request):
     context = {}
@@ -28,7 +35,6 @@ def contact(request):
         return render(request, 'djangoapp/components/contact.html', context)
 
 
-# Create a `login_request` view to handle sign in request
 def login_request(request):
     post_data = request.POST
     user = authenticate(username=post_data['username'], password=post_data['password'])
@@ -39,7 +45,36 @@ def login_request(request):
     return HttpResponseRedirect('/djangoapp/')
 
 
-# Create a `logout_request` view to handle sign out request
+def add_review_request(request, dealer_id):
+    context = {}
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            data = request.POST
+            review = dict()
+            review["time"] = datetime.utcnow().isoformat()
+            review["dealership"] = dealer_id
+            review["review"] = data["review"]
+            review["name"] = data["name"]
+            review["car_model"] = data["carmodel"]
+
+            json_payload = dict()
+            json_payload["review"] = review
+            result = post_request(URLS["REVIEW"], json_payload, dealerId=dealer_id)
+
+            context["post_result"] = result
+            return HttpResponseRedirect(f"/djangoapp/dealer/{dealer_id}/")
+
+
+def add_review_page(request, dealer_id):
+    context = {}
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            context["dealer_id"] = dealer_id
+            return render(request, 'djangoapp/components/add_review.html', context)
+        else:
+            return HttpResponseRedirect(f"/djangoapp/dealer/{dealer_id}")
+
+
 def logout_request(request):
     logout(request)
     return HttpResponseRedirect('/djangoapp/')
@@ -73,18 +108,40 @@ def registration_request(request):
         return HttpResponseRedirect('/djangoapp/')
 
 
-# Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
     context = {}
     if request.method == "GET":
         if request.user.is_authenticated:
             context['username'] = request.user
-        return render(request, 'djangoapp/index.html', context)
 
-# Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
+        url = URLS["DEALERSHIPS"]
+        dealerships = get_dealers_from_cf(url)
+        context["dealerships"] = dealerships
 
-# Create a `add_review` view to submit a review
-# def add_review(request, dealer_id):
-# ...
+        return render(request, 'djangoapp/components/dealers.html', context)
+
+
+def get_dealer_details(request, dealer_id):
+    context = {}
+    if request.method == "GET":
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            methods = [(get_dealer_reviews_from_cf, URLS["REVIEW"]), (get_dealers_by_id_from_cf, URLS["DEALERSHIPS"])]
+            tasks = [
+                loop.run_in_executor(
+                    executor,
+                    functools.partial(method[0], method[1], dealer_id),
+                    *()
+                )
+                for method in methods
+            ]
+
+            result = loop.run_until_complete(asyncio.gather(*tasks))
+
+            reviews = result[0]
+            dealer = result[1]
+
+            context["dealer"] = dealer
+            context["reviews"] = reviews
+            return render(request, 'djangoapp/components/dealer_details.html', context)

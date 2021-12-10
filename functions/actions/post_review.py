@@ -22,7 +22,7 @@ def main(dict):
             api_key=dict["IAM_API_KEY"],
             connect=True,
         )
-        print(dict)
+
         db = client[databaseName]
 
         data = dict["review"]

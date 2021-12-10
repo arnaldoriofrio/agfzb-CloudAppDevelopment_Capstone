@@ -10,15 +10,22 @@
          plugins: { iamauth: { iamApiKey: params.IAM_API_KEY } }
      });
 
+
      const state = params.state;
+     const dealerId = params.dealerId
 
      try {
          const db = await cloudant.use('dealerships');
          const dealerships = await db.list({include_docs: true})
 
-         if(state){
+         if(state) {
              let filter = state.replace(/"/g, '');
              dealerships.rows = dealerships.rows.filter(({doc}) => doc.state === filter )
+         }
+
+         if(dealerId) {
+             let filter = Number(dealerId)
+             dealerships.rows = dealerships.rows.filter(({doc}) => doc.id === filter )
          }
 
          return {
@@ -34,6 +41,7 @@
              }))
          };
      } catch (error) {
+         console.log(error)
          return { error: error.description };
      }
 

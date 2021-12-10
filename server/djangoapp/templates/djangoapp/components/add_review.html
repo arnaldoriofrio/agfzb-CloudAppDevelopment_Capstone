@@ -1,13 +1,13 @@
 {% extends "../index.html" %}
 
-{% block title %} Signup {% endblock %}
+{% block title %} Add Review {% endblock %}
 
 {% block content %}
 <div class="about-section paddingTB60 gray-bg">
     <div class="col-md-6 mx-auto text-center">
         <div class="header-title">
             <h1 class="wv-heading--title">
-                You can sign up for free to CarDealers!
+                Add your review for {{ dealer_id }}
             </h1>
             <h2 class="wv-heading--subtitle">
                 Please complete the form with all the required fields
@@ -17,41 +17,33 @@
     <div class="row">
         <div class="col-md-4 mx-auto">
             <div class="auth-form form ">
-                <form class="needs-validation" action="registration_request" method="POST" name="register" novalidate>
+                <form class="needs-validation" action="add_review_request" method="POST" name="add-review" novalidate>
                     <div class="form-group form-floating">
-                        <input type="text" name="username" class="form-control auth-input" id="username"
-                               placeholder="Enter username:" required>
-                        <label for="username">Email address</label>
+                        <input type="text" name="review" class="form-control auth-input" id="review"
+                               placeholder="Enter your review:" required>
+                        <label for="review">Review Text:</label>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                     </div>
                     <div class="form-group form-floating">
-                        <input type="text" name="firstname" class="form-control auth-input" id="firstname"
-                               placeholder="Enter Firstname:" required>
-                        <label for="firstname">First Name</label>
+                        <input type="text" name="name" class="form-control auth-input" id="name"
+                               placeholder="Enter Name:" required>
+                        <label for="name">Name</label>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                     </div>
                     <div class="form-group form-floating">
-                        <input type="text" name="lastname" class="form-control auth-input" id="lastname"
-                               placeholder="Enter Lastname:" required>
-                        <label for="lastname">Last Name</label>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
-                    </div>
-                    <div class="form-group form-floating">
-                        <input type="password" name="password" class="form-control auth-input" id="password"
-                               placeholder="Enter Password:" required>
-                        <label for="password">Password</label>
+                        <input type="text" name="carmodel" class="form-control auth-input" id="carmodel"
+                               placeholder="Enter Car Model:" required>
+                        <label for="carmodel">Car Model</label>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                     </div>
                     <div class="text-center form-floating">
-                        <button type="submit" class=" btn btn-block send-button tx-tfm">Sign Up</button>
+                        <button type="submit" class=" btn btn-block send-button tx-tfm">Add Review</button>
                     </div>
                     {% csrf_token %}
                 </form>
@@ -80,8 +72,4 @@
     })
 })()
 </script>
-{% endblock %}
-
-{% block footer %}
-<p>Custom footer</p>
 {% endblock %}

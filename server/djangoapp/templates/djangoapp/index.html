@@ -32,13 +32,13 @@
     </button>
     <div class="collapse navbar-collapse d-flex flex-row justify-content-between">
         <ul class="navbar-nav mb-2 mb-lg-0 align-self-start">
-            <li class="nav-item {% if request.path == '' %}active{% endif %}"><a href="./" class="nav-link"> Home </a>
+            <li class="nav-item {% if request.path == '/djangoapp/' %}active{% endif %}"><a href="/djangoapp/" class="nav-link"> Home </a>
             </li>
             <li class="nav-item"><a href="#" class="nav-link"> Product </a></li>
-            <li class="nav-item {% if request.path == '/djangoapp/about' %}active{% endif %}"><a href="about"
+            <li class="nav-item {% if request.path == '/djangoapp/about' %}active{% endif %}"><a href="/djangoapp/about"
                                                                                                  class="nav-link">
                 About </a></li>
-            <li class="nav-item {% if request.path == '/djangoapp/contact' %}active{% endif %}"><a href="contact"
+            <li class="nav-item {% if request.path == '/djangoapp/contact' %}active{% endif %}"><a href="/djangoapp/contact"
                                                                                                    class="nav-link">
                 Contact Us </a>
             </li>
