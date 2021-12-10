@@ -43,6 +43,11 @@
      background-color: #fec400
 }
 
+.btn-outline-dark > a {
+    text-decoration: none;
+    color: rgba(255,255,255,.55)
+}
+
  body {
      background-color: grey
  }
