@@ -1,34 +1,39 @@
 {% extends "../index.html" %}
 
+{% load jsonify %}
+
 {% block title %} Dealers {% endblock %}
 
 {% block content %}
 <div class="about-section paddingTB60 gray-bg">
     <h1>List of car dealers:</h1>
-    <table id="data-table" data-toggle="table">
+    <table id="data-table" data-toggle="table" data-filter-control="true" data-show-search-clear-button="true">
       <thead>
         <tr>
-          <th>Address</th>
-          <th>City</th>
-          <th>State</th>
+          <th data-field="id">Id</th>
+          <th data-field="address">Address</th>
+          <th data-field="city">City</th>
+          <th data-field="state" data-filter-control="select">State</th>
         </tr>
       </thead>
       <tbody>
-        {% for dealer in dealerships %}
-        <tr data-id="{{ dealer.id }}">
-            <td>{{ dealer.address }}</td>
-            <td>{{ dealer.city }}</td>
-            <td>{{ dealer.state }}</td>
-        </tr>
-      {% endfor %}
       </tbody>
     </table>
 </div>
 
 <script>
-    $('#data-table').on('click-row.bs.table', function (row, $element, field) {
-        window.location.href = `./dealer/${$element._data.id}`;
-    })
+     (function() {
+        const data = JSON.parse(`{{ dealerships|jsonify }}`);
+        const $elem = $('#data-table');
+
+        $elem.bootstrapTable({
+            data: data
+        });
+
+        $elem.on('click-row.bs.table', function (row, $element, field) {
+            window.location.href = `./dealer/${$element.id}`;
+        })
+    })();
 </script>
 
 {% endblock %}

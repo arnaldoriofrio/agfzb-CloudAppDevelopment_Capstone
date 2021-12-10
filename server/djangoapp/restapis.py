@@ -8,7 +8,7 @@ from requests.auth import HTTPBasicAuth
 def post_request(url, json_payload=None, **kwargs):
     try:
         result = requests.post(url, params=kwargs, json=json_payload)
-        
+
         if result:
             json_data = json.loads(result.text)
             return json_data
@@ -50,6 +50,7 @@ def get_dealers_from_cf(url, **kwargs):
         json_data = result['result']
         for dealer in json_data:
             dealers.append(CarDealer().build_from(dealer))
+
         return dealers
 
 
@@ -69,6 +70,7 @@ def get_response_dealers(result):
         json_data = result['result']
         for dealer in json_data:
             dealers.append(CarDealer().build_from(dealer))
+
         return dealers
 
 
@@ -84,6 +86,7 @@ def get_dealer_reviews_from_cf(url, dealer_id):
             review = DealerReview() \
                 .build_from(json_review) \
                 .with_sentiment(sentiment)
+
             reviews.append(review)
 
         return reviews

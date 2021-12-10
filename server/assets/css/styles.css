@@ -4,3 +4,8 @@
     padding: 100px;
     box-shadow: 10px 5px 5px #212529;
 }
+
+.card-img-left {
+    width: 20px;
+    height: 20px;
+}

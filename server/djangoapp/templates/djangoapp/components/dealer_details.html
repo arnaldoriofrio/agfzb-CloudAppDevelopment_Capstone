@@ -1,5 +1,7 @@
 {% extends "../index.html" %}
 
+{% load define_action %}
+
 {% block title %} Dealer Details {% endblock %}
 
 {% block content %}
@@ -20,16 +22,21 @@
                 <div class="card-body">
                     <h5 class="card-title">Reviews</h5>
                     {% for review in reviews %}
+                        {% if review.sentiment is None or review.sentiment == "neutral" %}
+                            {% define "neutral" as emoji %}
+                        {% elif review.sentiment == "negative" %}
+                            {% define "negative" as emoji %}
+                        {% else %}
+                            {% define "positive" as emoji %}
+                        {% endif %}
+
                     <div class="one-review">
+                        <div class="card-header">
+                            <img class="card-img-left" src="/media/emoji/{{ emoji }}.png"> {{ review.name }}
+                        </div>
                         <div class="row">
-                            <div class="col-md-3">
-                                <p>{{ review.name }}</p>
-                            </div>
                             <div class="col-md-6 text-success">
                                 Purchase Date: <small>{{ review.purchase_date }}</small>
-                            </div>
-                            <div class="col-md-6 text-success">
-                                Sentiment: <small>{{ review.sentiment }}</small>
                             </div>
                         </div>
                         <div class="row text-success">

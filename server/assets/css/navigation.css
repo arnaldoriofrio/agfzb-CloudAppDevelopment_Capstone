@@ -1,5 +1,6 @@
  .navbar {
-     background: #000000
+     background: #000000;
+     padding-left: 50px;
  }
 
  .nav-item::after {

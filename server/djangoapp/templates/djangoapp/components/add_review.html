@@ -17,10 +17,11 @@
     <div class="row">
         <div class="col-md-4 mx-auto">
             <div class="auth-form form ">
-                <form class="needs-validation" action="add_review_request" method="POST" name="add-review" novalidate>
+                <form class="needs-validation" action="add_review_request" method="POST" name="add-review" novalidate
+                      id="add-review">
                     <div class="form-group form-floating">
-                        <input type="text" name="review" class="form-control auth-input" id="review"
-                               placeholder="Enter your review:" required>
+                        <textarea name="review" class="form-control auth-input" rows="4" id="review"
+                                  style="height:100px" placeholder="Enter your review:" required></textarea>
                         <label for="review">Review Text:</label>
                         <div class="valid-feedback">
                             Looks good!
@@ -35,15 +36,28 @@
                         </div>
                     </div>
                     <div class="form-group form-floating">
-                        <input type="text" name="carmodel" class="form-control auth-input" id="carmodel"
-                               placeholder="Enter Car Model:" required>
+                        <input class="date-own form-control auth-input" type="text" name="purchasedate"
+                               id="purchasedate"/>
+                        <label for="purchasedate">Pick Purchase Date</label>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="form-group form-floating">
+                        <select name="carmodel" id="carmodel" class="form-select auth-input" required>
+                            {% for car in cars %}
+                            <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}
+                            </option>
+                            {% endfor %}
+                        </select>
                         <label for="carmodel">Car Model</label>
                         <div class="valid-feedback">
                             Looks good!
                         </div>
                     </div>
                     <div class="text-center form-floating">
-                        <button type="submit" class=" btn btn-block send-button tx-tfm">Add Review</button>
+                        <button id="submit-review" type="submit" class=" btn btn-block send-button tx-tfm">Add Review
+                        </button>
                     </div>
                     {% csrf_token %}
                 </form>
@@ -53,23 +67,35 @@
 </div>
 <script>
     (function () {
-  'use strict'
+        'use strict'
 
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.needs-validation')
+        $('.date-own').datepicker({
+            format: 'mm/dd/yyyy'
+        });
 
-  // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
+        $('#submit-review').on('click', (event) => {
+            let btn = $(event.target);
+            btn.prop('disabled', true);
+            btn.html("Loading...")
+            btn.append(`<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`)
+            $('#add-review').submit();
+        });
 
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
 </script>
 {% endblock %}

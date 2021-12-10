@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
+from .models import CarModel
 from .restapis import get_dealers_from_cf, analyze_review_sentiments, get_dealer_reviews_from_cf, \
     get_dealers_by_id_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
@@ -55,7 +56,11 @@ def add_review_request(request, dealer_id):
             review["dealership"] = dealer_id
             review["review"] = data["review"]
             review["name"] = data["name"]
-            review["car_model"] = data["carmodel"]
+            review["purchase_date"] = data["purchasedate"]
+
+            car = CarModel.objects.get(id=data["carmodel"])
+            review["car_model"] = car.name
+            review["car_year"] = car.year.year
 
             json_payload = dict()
             json_payload["review"] = review
@@ -69,6 +74,7 @@ def add_review_page(request, dealer_id):
     context = {}
     if request.method == "GET":
         if request.user.is_authenticated:
+            context["cars"] = CarModel.objects.all()
             context["dealer_id"] = dealer_id
             return render(request, 'djangoapp/components/add_review.html', context)
         else:

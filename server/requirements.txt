@@ -1,4 +1,5 @@
 requests
 Django
+simplejson
 gunicorn==20.0.4
 Pillow==8.4.0

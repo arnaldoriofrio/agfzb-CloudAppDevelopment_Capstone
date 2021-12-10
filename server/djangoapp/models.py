@@ -3,7 +3,6 @@ from django.utils.timezone import now
 
 
 # Create your models here.
-
 class CarMake(models.Model):
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=255)
