@@ -24,10 +24,24 @@
      color: #fec400
  }
 
+ .welcome {
+     color: #fec400
+ }
+
  .nav-link {
      padding: 25px 5px;
      transition: 0.2s
  }
+
+.btn-outline-dark {
+    background-color: transparent;
+    border: 1px solid #fec400 !important;
+    color: rgba(255,255,255,.55)
+}
+
+.btn-outline-dark:hover{
+     background-color: #fec400
+}
 
  body {
      background-color: grey

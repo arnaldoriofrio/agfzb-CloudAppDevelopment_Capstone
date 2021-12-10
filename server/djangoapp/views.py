@@ -26,13 +26,23 @@ def contact(request):
     context = {}
     if request.method == "GET":
         return render(request, 'djangoapp/components/contact.html', context)
+
+
 # Create a `login_request` view to handle sign in request
-# def login_request(request):
-# ...
+def login_request(request):
+    post_data = request.POST
+    user = authenticate(username=post_data['username'], password=post_data['password'])
+
+    if user is not None:
+        login(request, user)
+
+    return HttpResponseRedirect('/djangoapp/')
+
 
 # Create a `logout_request` view to handle sign out request
-# def logout_request(request):
-# ...
+def logout_request(request):
+    logout(request)
+    return HttpResponseRedirect('/djangoapp/')
 
 # Create a `registration_request` view to handle sign up request
 # def registration_request(request):
@@ -42,8 +52,9 @@ def contact(request):
 def get_dealerships(request):
     context = {}
     if request.method == "GET":
+        if request.user.is_authenticated:
+            context['username'] = request.user
         return render(request, 'djangoapp/index.html', context)
-
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 # def get_dealer_details(request, dealer_id):
@@ -52,4 +63,3 @@ def get_dealerships(request):
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
 # ...
-
