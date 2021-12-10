@@ -1,5 +1,5 @@
-export IAM_API_KEY="Ul81j70QPUMpjVeR99UOS9LiB2yV97D3fe6gU6tu0pet"
-export COUCH_URL="https://e577ad30-22b3-42d4-a5d6-64161fcdbe18-bluemix.cloudantnosqldb.appdomain.cloud"
+export IAM_API_KEY=""
+export COUCH_URL=""
 
 echo "==== Checking dependencies ===="
 npm list -g | grep couchimport || npm install -g couchimport --no-shrinkwrap
