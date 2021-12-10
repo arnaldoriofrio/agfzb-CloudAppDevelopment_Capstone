@@ -9,3 +9,16 @@
     width: 20px;
     height: 20px;
 }
+
+.review-content {
+    flex: 1
+}
+
+.review-content > .btn-outline-dark {
+    background-color: #1b1b1b;
+}
+
+.review-content > .btn-outline-dark:hover {
+    background-color: #fec400;
+    color: #3d3d3d;
+}

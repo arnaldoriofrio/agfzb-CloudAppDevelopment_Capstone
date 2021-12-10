@@ -19,7 +19,7 @@ spec:
         run: dealership
     spec:
       containers:
-      - image: us.icr.io/django-app/dealership:latest
+      - image: uk.icr.io/django-app/dealership
         imagePullPolicy: Always
         name: dealership
         ports:

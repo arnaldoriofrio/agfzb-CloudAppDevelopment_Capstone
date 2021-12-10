@@ -6,18 +6,19 @@
 
 {% block content %}
 <div class="about-section paddingTB60 gray-bg">
-    <div class="row-fluid">
-        <div class="span2">
-            <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm"
+    <div class="row-fluid d-flex flex-column justify-content-center align-items-stretch">
+        <div>
+            <div class="d-flex flex-column align-items-center review-content">
+                <img src="https://secure.gravatar.com/avatar/de9b11d0f9c0569ba917393ed5e5b3ab?s=140&r=g&d=mm"
                  class="img-circle">
-        </div>
-
-        <div class="span8">
-            <h3>{{ dealer.address }}</h3>
-            <h6>Coordinates: {{ dealer.lat }} / {{ dealer.long }}</h6>
-            <h6>State: {{ dealer.state }}</h6>
-            <h6>City: {{ dealer.city }}</h6>
-
+                <h3>{{ dealer.address }}</h3>
+                <h6>Coordinates: {{ dealer.lat }} / {{ dealer.long }}</h6>
+                <h6>State: {{ dealer.state }}</h6>
+                <h6>City: {{ dealer.city }}</h6>
+                <button class="form-control btn btn-outline-dark">
+                    <a href="add_review_page">Add Review</a>
+                </button>
+            </div>
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Reviews</h5>
