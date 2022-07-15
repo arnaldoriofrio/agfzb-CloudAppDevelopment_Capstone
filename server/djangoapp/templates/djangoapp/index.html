@@ -47,8 +47,8 @@
                 {% else %}
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                    <!--<form class="form-inline my-2 my-lg-0" action="{% url 'djangoapp:login' %}" method="post">-->
-                    <form class="form-inline my-2 my-lg-0">
+                    <form class="form-inline my-2 my-lg-0" action="{% url 'djangoapp:login' %}" method="post">
+                    <!--<form class="form-inline my-2 my-lg-0">-->
                         {% csrf_token %}
                         <!--
                         <div class="input-group">-->
