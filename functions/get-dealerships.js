@@ -47,7 +47,9 @@ async function main(params) {
                  address: doc.address,
                  zip: doc.zip,
                  lat: doc.lat,
-                 long: doc.long
+                 long: doc.long,
+                 short_name: doc.short_name,
+                 full_name: doc.full_name
              }))
          };
      } catch (error) {
