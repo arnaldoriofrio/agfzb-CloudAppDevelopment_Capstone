@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import related models
 
 # Register your models here.
 from .models import CarModel, CarMake

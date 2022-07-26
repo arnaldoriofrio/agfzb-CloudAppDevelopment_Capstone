@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
-
+from django.conf import settings
 
 # Create your models here.
 
@@ -10,6 +10,7 @@ from django.utils.timezone import now
 # - Any other fields you would like to include in car make model
 # - __str__ method to print a car make object
 class CarMake(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=255)
 
@@ -35,7 +36,7 @@ class CarModel(models.Model):
         (SUV, 'Suv'),
         (WAGON, 'Wagon')
     )
-
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=20)
     dealer_id = models.IntegerField()
     year = models.DateField()
