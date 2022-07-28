@@ -18,7 +18,7 @@ import json
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-let params= { "IAM_API_KEY": "l5LNBMImpBgQmrLUmuqlCmG4w0ZbnbP7-8Prd48hVzZl",
+parametros= { "IAM_API_KEY": "l5LNBMImpBgQmrLUmuqlCmG4w0ZbnbP7-8Prd48hVzZl",
     "COUCH_URL": "https://c4a1e7aa-3d04-493c-897d-f71e393bbeb1-bluemix.cloudantnosqldb.appdomain.cloud" }
 
 # Create your views here.
@@ -89,7 +89,7 @@ def get_dealerships(request):
     if request.method == "GET":
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/5a9cd3d9-02cb-4f48-bd18-cf9f0e61270e/string/get-dealerships"
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf(url, params)
+        dealerships = get_dealers_from_cf(url, parametros)
         # Concat all dealer's short name
         dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
