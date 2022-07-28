@@ -80,7 +80,7 @@ def registration_request(request):
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
     if request.method == "GET":
-        url = "your-cloud-function-domain/dealerships/dealer-get"
+        url = "https://us-south.functions.appdomain.cloud/api/v1/web/5a9cd3d9-02cb-4f48-bd18-cf9f0e61270e/string/get-dealerships"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
         # Concat all dealer's short name
