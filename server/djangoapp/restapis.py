@@ -22,7 +22,7 @@ def get_request(url, **kwargs):
     print("With status {} ".format(status_code))
     #json_data = json.loads(response.text)
     #return json_data
-    return response
+    return response.text
     
     
 # Create a `post_request` to make HTTP POST requests
