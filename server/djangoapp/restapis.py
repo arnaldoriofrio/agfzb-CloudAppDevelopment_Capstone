@@ -36,10 +36,10 @@ def get_request(url, **kwargs):
 def get_dealers_from_cf(url, **kwargs):
     results = []
     # Call get_request with a URL parameter
-    json_result = json.loads(get_request(url))
-    if json_result:
+    dict_result = json.loads(get_request(url))
+    if dict_result:
         # Get the row list in JSON as dealers
-        dealers = json_result["rows"]
+        dealers = dict_result["rows"]
         # For each dealer object
         for dealer in dealers:
             # Get its content in `doc` object
