@@ -9,20 +9,40 @@ from requests.auth import HTTPBasicAuth
 # e.g., response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
 #                                     auth=HTTPBasicAuth('apikey', api_key))
 def get_request(url, **kwargs):
-    print(kwargs)
-    print("GET from {} ".format(url))
+    api_key = kwargs.get("api_key", None)
+    print("GET from {} with params {}".format(url, str(kwargs)))
+    response = None
     try:
+        if api_key:
+            params = dict()
+            params["text"] = kwargs["text"]
+            params["version"] = kwargs["version"]
+            params["features"] = kwargs["features"]
+            params["return_analyzed_text"] = kwargs["return_analyzed_text"]
+
+            response = requests.get(url, params=params, headers={'Content-Type': 'application/json'},
+                                    auth=HTTPBasicAuth('apikey', api_key))
+        else:
+            response = requests.get(url, headers={'Content-Type': 'application/json'},
+                                    params=params)
+    except Exception as ex:
+        print("Network exception occurred:\n" + str(ex))
+
+    json_data = json.loads(response.text)
+    return json_data
+
+    #print(kwargs)
+    #print("GET from {} ".format(url))
+    #try:
         # Call get method of requests library with URL and parameters
-        response = requests.get(url, headers={'Content-Type': 'application/json'},
+    #    response = requests.get(url, headers={'Content-Type': 'application/json'},
                                     params=kwargs)
-    except:
+    #except:
         # If any error occurs
-        print("Network exception occurred")
-    status_code = response.status_code
-    print("With status {} ".format(status_code))
-    #json_data = json.loads(response.text)
-    #return json_data
-    return response.text
+    #    print("Network exception occurred")
+    #status_code = response.status_code
+    #print("With status {} ".format(status_code))
+    #return response.text
     
     
 # Create a `post_request` to make HTTP POST requests
@@ -67,11 +87,12 @@ def get_dealer_reviews_from_cf(url, dealerId=dealer_id):
         for review in reviews:
             # Get its content in `doc` object
             review_doc = review["doc"]
+            sentiment = analyze_review_sentiments(json_review['review'])
             # Create a CarDealer object with values in `doc` object
             review_obj = DealerReview(address=review_doc["address"], city=review_doc["city"], full_name=review_doc["full_name"],
                                    id=review_doc["id"], lat=review_doc["lat"], long=review_doc["long"],
                                    short_name=review_doc["short_name"],
-                                   st=review_doc["st"], zip=review_doc["zip"])
+                                   st=review_doc["st"], zip=review_doc["zip"],sentiment=sentiment)
             results.append(review_obj)
 
     return results
