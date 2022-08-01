@@ -56,15 +56,77 @@ def get_dealers_from_cf(url, **kwargs):
 # Create a get_dealer_reviews_from_cf method to get reviews by dealer id from a cloud function
 # - Call get_request() with specified arguments
 # - Parse JSON results into a DealerView object list
+def get_dealer_reviews_from_cf(url, dealerId=dealer_id):
+    results = []
+    # Call get_request with a URL parameter
+    dict_result = json.loads(get_request(url))
+    if dict_result:
+        # Get the row list in JSON as dealers
+        reviews = dict_result["rows"]
+        # For each dealer object
+        for review in reviews:
+            # Get its content in `doc` object
+            review_doc = review["doc"]
+            # Create a CarDealer object with values in `doc` object
+            review_obj = DealerReview(address=review_doc["address"], city=review_doc["city"], full_name=review_doc["full_name"],
+                                   id=review_doc["id"], lat=review_doc["lat"], long=review_doc["long"],
+                                   short_name=review_doc["short_name"],
+                                   st=review_doc["st"], zip=review_doc["zip"])
+            results.append(review_obj)
 
+    return results
+   
 # def get_dealer_by_id_from_cf(url, dealerId):
+def get_dealer_by_id_from_cf(url, dealerId):
+    results = []
+    # Call get_request with a URL parameter
+    dict_result = json.loads(get_request(url, dealerId))
+    if dict_result:
+        # Get the row list in JSON as dealers
+        dealers = dict_result["rows"]
+        # For each dealer object
+        for dealer in dealers:
+            # Get its content in `doc` object
+            dealer_doc = dealer["doc"]
+            # Create a CarDealer object with values in `doc` object
+            dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
+                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                                   short_name=dealer_doc["short_name"],
+                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
+            results.append(dealer_obj)
 
+    return results
 
+# def get_dealer_by_state_from_cf(url, dealerId):
+def get_dealer_by_state_from_cf(url, state):
+    results = []
+    # Call get_request with a URL parameter
+    dict_result = json.loads(get_request(url, state))
+    if dict_result:
+        # Get the row list in JSON as dealers
+        dealers = dict_result["rows"]
+        # For each dealer object
+        for dealer in dealers:
+            # Get its content in `doc` object
+            dealer_doc = dealer["doc"]
+            # Create a CarDealer object with values in `doc` object
+            dealer_obj = CarDealer(address=dealer_doc["address"], city=dealer_doc["city"], full_name=dealer_doc["full_name"],
+                                   id=dealer_doc["id"], lat=dealer_doc["lat"], long=dealer_doc["long"],
+                                   short_name=dealer_doc["short_name"],
+                                   st=dealer_doc["st"], zip=dealer_doc["zip"])
+            results.append(dealer_obj)
+
+    return results
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 # def analyze_review_sentiments(text):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
+def analyze_review_sentiments(review_text):
+    url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/2191c73b-8d1d-4606-ba8e-a01418dbfa02/v1/analyze"
+    api_key = "GAGc_iMCAd9FDzaXG3khyeJePs46ZuvG8k841ZVxqprt"
 
-
-
+    result = get_request(url, text=review_text, features={"sentiment": {}}, version='2021-08-01',
+                         return_analyzed_text=False, api_key=api_key)
+    if result.get('sentiment', False):
+        return result["sentiment"]["document"]["label"]
