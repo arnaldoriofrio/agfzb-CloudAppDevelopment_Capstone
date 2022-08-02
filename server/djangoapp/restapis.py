@@ -28,8 +28,8 @@ def get_request(url, **kwargs):
     except Exception as ex:
         print("Network exception occurred:\n" + str(ex))
 
-    json_data = json.loads(response.text)
-    return json_data
+    #json_data = json.loads(response.text)
+    return response.text
 
     #print(kwargs)
     #print("GET from {} ".format(url))
