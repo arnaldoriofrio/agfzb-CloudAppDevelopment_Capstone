@@ -36,7 +36,7 @@ def get_request(url, **kwargs):
     #try:
         # Call get method of requests library with URL and parameters
     #    response = requests.get(url, headers={'Content-Type': 'application/json'},
-                                    params=kwargs)
+    #                                params=kwargs)
     #except:
         # If any error occurs
     #    print("Network exception occurred")
