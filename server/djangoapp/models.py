@@ -32,7 +32,7 @@ class CarModel(models.Model):
         return f"CarModel(name={self.name}, dealer_id={self.dealer_id})"
 
 
-class CarDealer:
+class CarDealer(models.Model):
     def __init__(self):
         self.state = None
         self.zip = None
@@ -59,7 +59,7 @@ class CarDealer:
         return "Dealer address: " + self.address
 
 
-class DealerReview:
+class DealerReview(models.Model):
     def __init__(self):
         self.dealership = None
         self.name = None
