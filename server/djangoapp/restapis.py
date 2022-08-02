@@ -24,7 +24,7 @@ def get_request(url, **kwargs):
                                     auth=HTTPBasicAuth('apikey', api_key))
         else:
             response = requests.get(url, headers={'Content-Type': 'application/json'},
-                                    params=params)
+                                    params=kwargs)
     except Exception as ex:
         print("Network exception occurred:\n" + str(ex))
 
