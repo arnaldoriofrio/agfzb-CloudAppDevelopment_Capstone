@@ -47,7 +47,7 @@ def get_request(url, **kwargs):
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
 #def post_request(url, json_payload=None, **kwargs):
-def post_request(url, json_payload, **kwargs)
+def post_request(url, json_payload, **kwargs):
     try:
         result = requests.post(url, params=kwargs, json=json_payload)
 
@@ -106,7 +106,7 @@ def get_dealer_reviews_from_cf(url, dealerId):
     return results
    
 # def get_dealer_by_id_from_cf(url, dealerId):
-def get_dealer_by_id_from_cf(url, dealerId):
+def get_dealers_by_id_from_cf(url, dealerId):
     results = []
     # Call get_request with a URL parameter
     dict_result = json.loads(get_request(url, dealerId))
@@ -127,7 +127,7 @@ def get_dealer_by_id_from_cf(url, dealerId):
     return results
 
 # def get_dealer_by_state_from_cf(url, dealerId):
-def get_dealer_by_state_from_cf(url, state):
+def get_dealers_by_state_from_cf(url, state):
     results = []
     # Call get_request with a URL parameter
     dict_result = json.loads(get_request(url, state))
