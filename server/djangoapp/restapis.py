@@ -154,7 +154,7 @@ def analyze_review_sentiments(review_text):
     url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/2e43f859-6933-4546-b73f-c5c31a390746/v1/analyze"
     api_key = "uhyOWqpZooV0Q-9f1xPSbg2dz9jjyfSdDhm1A-vU6jWI"
     
-    result = get_request(url, text=review_text, features={"sentiment": {}}, version='2021-08-01',
-                         return_analyzed_text=False, api_key=api_key)
+    result = json.loads(get_request(url, text=review_text, features={"sentiment": {}}, version='2021-08-01',
+                         return_analyzed_text=False, api_key=api_key))
     if result.get('sentiment', False):
         return result["sentiment"]["document"]["label"]
