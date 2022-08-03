@@ -110,7 +110,18 @@ def get_dealer_details(request, dealer_id):
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
     context = {}
+    if request.method == "GET":
+        # query the cars with the dealer id to be reviewed. The queried cars will be used in the <select> dropdown.
+        # Then append the queried cars into context and call render method to render add_review.html.
     if request.method == "POST":
+        # When request.method ==POST , you need to update the json_payload["review"] to use the actual values 
+        ## obtained from the review form.
+        # For review time, you may use some Python datetime formatting method such as datetime.utcnow().isoformat() 
+        ## to convert it into ISO format to be consistent with the format in
+        # Cloudant. - For purchase, you may use car.year.strftime("%Y") to only get the year from the date field.
+        # Update return statement to redirect user to the dealer details page once the review post is done for example.
+        ## "redirect("djangoapp:dealer_details", dealer_id=dealer_id)"
+        
         if request.user.is_authenticated:
             data = request.POST
             review = dict()
