@@ -12,5 +12,53 @@
 </head>
     <body>
     <!--Add review form here -->
+        <form class="needs-validation" action="add_review" method="POST" name="add-review" novalidate
+            id="add-review">
+            <div class="form-group form-floating">
+                <textarea name="review" class="form-control auth-input" rows="4" id="review"
+                          style="height:100px" placeholder="Enter the review content:" required></textarea>
+                <label for="review">Review Text:</label>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group form-floating">
+                <input type="text" name="name" class="form-control auth-input" id="name"
+                       placeholder="Enter Name:" required>
+                <label for="name">Name</label>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group form-floating">
+                <input class="date-own form-control auth-input" type="text" name="purchasedate"
+                       id="purchasedate"/>
+                <label for="purchasedate">Select your Purchase Date</label>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="form-group form-floating">
+                <select name="carmodel" id="carmodel" class="form-select auth-input" required>
+                    {% for car in cars %}
+                    <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <label for="carmodel">Car Model</label>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="text-center form-floating">
+                <button id="submit-review" type="submit" class=" btn btn-block send-button tx-tfm">Add Review
+                </button>
+            </div>
+        </form>
     </body>
+    <script type="text/javascript">
+      $('.date-own').datepicker({
+         format: 'mm/dd/yyyy'
+       });
+    </script>
 </html>
