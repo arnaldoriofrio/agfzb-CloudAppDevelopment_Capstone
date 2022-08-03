@@ -67,15 +67,14 @@
         <div class="card-columns"> 
             {% for review in reviews %}
                 <div class="card">
-                        {% if review.sentiment is None or review.sentiment == "neutral" %}
-                            {% define "neutral" as emoji %}
-                        {% elif review.sentiment == "negative" %}
-                            {% define "negative" as emoji %}
-                        {% else %}
-                            {% define "positive" as emoji %}
-                        {% endif %}
                         <div class="card-header">
-                            <img class="card-img-left" src="/static/media/emoji/{{ emoji }}.png"> {{ review.name }}
+                            {% if review.sentiment is None or review.sentiment == "neutral" %}
+                                <img class="card-img-left" src="/static/media/emoji/neutral.png"> {{ review.name }}
+                            {% elif review.sentiment == "negative" %}
+                                <img class="card-img-left" src="/static/media/emoji/negative.png"> {{ review.name }}
+                            {% else %}
+                                <img class="card-img-left" src="/static/media/emoji/positive.png"> {{ review.name }}
+                            {% endif %}
                         </div>
                         <div class="row">
                             <div class="col-md-6 text-success">
