@@ -95,7 +95,7 @@ def get_dealer_reviews_from_cf(url, dealerId):
         for review in reviews:
             # Get its content in `doc` object
             review_doc = review["doc"]
-            sentiment = analyze_review_sentiments(json_review['review'])
+            sentiment = analyze_review_sentiments(review_doc['review'])
             # Create a CarDealer object with values in `doc` object
             review_obj = DealerReview(dealership=review_doc["dealership"], name=review_doc["name"], purchase=review_doc["purchase"],
                                    review=review_doc["review"], purchase_date=review_doc["purchase_date"], car_make=review_doc["car_make"],
@@ -151,9 +151,9 @@ def get_dealers_by_state_from_cf(url, state):
 # - Call get_request() with specified arguments
 # - Get the returned sentiment label such as Positive or Negative
 def analyze_review_sentiments(review_text):
-    url = "https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/2191c73b-8d1d-4606-ba8e-a01418dbfa02/v1/analyze"
-    api_key = "GAGc_iMCAd9FDzaXG3khyeJePs46ZuvG8k841ZVxqprt"
-
+    url = "https://api.us-south.natural-language-understanding.watson.cloud.ibm.com/instances/2e43f859-6933-4546-b73f-c5c31a390746/v1/analyze"
+    api_key = "uhyOWqpZooV0Q-9f1xPSbg2dz9jjyfSdDhm1A-vU6jWI"
+    
     result = get_request(url, text=review_text, features={"sentiment": {}}, version='2021-08-01',
                          return_analyzed_text=False, api_key=api_key)
     if result.get('sentiment', False):
