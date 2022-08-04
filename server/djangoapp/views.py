@@ -113,6 +113,7 @@ def add_review(request, dealer_id):
     if request.method == "GET":
         # query the cars with the dealer id to be reviewed. The queried cars will be used in the <select> dropdown.
         # Then append the queried cars into context and call render method to render add_review.html.
+        a=1
     if request.method == "POST":
         # When request.method ==POST , you need to update the json_payload["review"] to use the actual values 
         ## obtained from the review form.
