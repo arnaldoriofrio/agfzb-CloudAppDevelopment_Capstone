@@ -15,11 +15,8 @@ import json
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 #
-#parametros= { "IAM_API_KEY": "l5LNBMImpBgQmrLUmuqlCmG4w0ZbnbP7-8Prd48hVzZl",
-#    "COUCH_URL": "https://c4a1e7aa-3d04-493c-897d-f71e393bbeb1-bluemix.cloudantnosqldb.appdomain.cloud" }
 
 # Create your views here.
-
 
 # Create an `about` view to render a static about page
 def about(request):
