@@ -7,55 +7,36 @@
 # @return The output of this action, which must be a JSON object.
 #
 #
-import json
 
-from cloudant.client import Cloudant
-from cloudant.error import CloudantException
-import requests
+#import sys
 
+def main(params):
 
-def main(dict):
-    databaseName = "reviews"
+    import json
+    from ibmcloudant.cloudant_v1 import CloudantV1
+    from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+    from ibm_cloud_sdk_core import ApiException
 
     try:
-        client = Cloudant.iam(
-            account_name=dict["COUCH_USERNAME"],
-            api_key=dict["IAM_API_KEY"],
-            connect=True,
-        )
-
-        dealerId = dict.get("dealerId", str())
-
-        db = client[databaseName]
-        dealers = []
-
-        data = db
-        dealerId = dealerId.strip('"') if type(dealerId) == str else dealerId
-
+        authenticator = IAMAuthenticator(params['CLOUDANT_APIKEY'])
+        service = CloudantV1(authenticator=authenticator)
+        service.set_service_url(params['CLOUDANT_URL'])
+        
+        data=service.post_all_docs(db="reviews", include_docs=True).get_result()
+        dealerId=params['dealerId']
+        
+        dealerId = int(dealerId) if type(dealerId) == str else dealerId
+        
         if dealerId:
-            data = filter(lambda r: r['dealership'] == int(dealerId), data)
-
-        for document in data:
-            dealers.append({
-                "id": document.get("id", str()),
-                "name": document.get("name", str()),
-                "dealership": document.get("dealership", str()),
-                "review": document.get("review", str()),
-                "purchase": document.get("purchase", str()),
-                "purchase_date": document.get("purchase_date", str()),
-                "car_make": document.get("car_make", str()),
-                "car_model": document.get("car_model", str()),
-                "car_year": document.get("car_year", str())
-            })
-
+            response = list(filter(lambda r: r['doc']['dealership'] == dealerId, data['rows']))
+        
         return {
-            "result": dealers
+            "body": {"rows":response}
+            #"body": {"rows":data['rows']}
         }
-    except CloudantException as ce:
-        print("unable to connect")
-        return {"error": ce}
-    except (requests.exceptions.RequestException, ConnectionResetError) as err:
-        print("connection error")
-        return {"error": err}
-
-    return {"dbs": client.all_dbs()}
+    except ApiException as ae:
+        print("Method failed")
+        print(" - status code: " + str(ae.code))
+        print(" - error message: " + ae.message)
+        if ("reason" in ae.http_response.json()):
+            print(" - reason: " + ae.http_response.json()["reason"])
